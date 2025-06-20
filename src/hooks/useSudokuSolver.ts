@@ -41,7 +41,11 @@ export const useSudokuSolver = () => {
   //! handleFocus function is triggered when a square is focused
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const focusedSquareID = e.target.id;
+    //! control if the focused square is empty
     const [row, col] = focusedSquareID.split("-").map(Number);
+    if (sudokuValues[row][col] !== 0) {
+      return; // If the square is not empty, do nothing
+    }
     const possibleNumbers = noRepeatNumbersModel(focusedSquareID);
 
     if (possibleNumbers.length === 1) {

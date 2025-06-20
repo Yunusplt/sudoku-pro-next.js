@@ -32,7 +32,9 @@ export const styleTextField = (
   },
   "& .MuiInputBase-input": {
     textAlign: "center",
-    caretColor: "transparent",
+    "&:focus": {
+      caretColor: "transparent",
+    },
     MozAppearance: "textfield",
     "&::-webkit-outer-spin-button": {
       WebkitAppearance: "none",
