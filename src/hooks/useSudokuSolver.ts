@@ -1,11 +1,12 @@
 import { useRef, useCallback, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setSudokuValues, setSquaresToCompare } from "@/redux/sudokuSlice";
+import { setSquaresToCompare, setSudokuValues } from "@/redux/sudokuSlice";
 import {
   getEmptySquares,
   focusSquareById,
   getPossibleNumbers,
   getAllSquaresToCompare,
+  findNumbersToEliminate,
 } from "@/utils/sudokuHelpers";
 
 export const useSudokuSolver = () => {
@@ -37,16 +38,59 @@ export const useSudokuSolver = () => {
     alert("Sudoku wurde erfolgreich gelöst!");
   }, []);
 
+  //! handleFocus function is triggered when a square is focused
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const focusedSquareID = e.target.id;
     const [row, col] = focusedSquareID.split("-").map(Number);
+    const possibleNumbers = noRepeatNumbersModel(focusedSquareID);
 
+    if (possibleNumbers.length === 1) {
+      const copy = sudokuValues.map((r) => [...r]);
+      copy[row][col] = possibleNumbers[0];
+      dispatch(setSudokuValues(copy));
+    } else if (possibleNumbers.length > 1) {
+      //! start Elimination process
+      const {
+        hasValueClosestSquaresInCol,
+        hasValueClosestSquaresInRow,
+        numbersInFirstRow,
+        numbersInSecondRow,
+        numbersInFirstCol,
+        numbersInSecondCol,
+      } = findNumbersToEliminate(col, row, sudokuValues);
+
+      if (hasValueClosestSquaresInRow) {
+        for (const id of possibleNumbers) {
+          if (
+            numbersInFirstRow.includes(id) &&
+            numbersInSecondRow.includes(id)
+          ) {
+            const copy = sudokuValues.map((r) => [...r]);
+            copy[row][col] = id;
+            dispatch(setSudokuValues(copy));
+          }
+        }
+      }
+
+      if (hasValueClosestSquaresInCol) {
+        for (const id of possibleNumbers) {
+          if (
+            numbersInFirstCol.includes(id) &&
+            numbersInSecondCol.includes(id)
+          ) {
+            const copy = sudokuValues.map((r) => [...r]);
+            copy[row][col] = id;
+            dispatch(setSudokuValues(copy));
+          }
+        }
+      }
+    }
+  };
+
+  //* This function is used to get all squares which are used to compare
+  const noRepeatNumbersModel = (focusedSquareID: string) => {
     //* get the all squares which are used to compare
-    const allSquaresToCompare = getAllSquaresToCompare(
-      row,
-      col,
-      focusedSquareID
-    );
+    const allSquaresToCompare = getAllSquaresToCompare(focusedSquareID);
 
     dispatch(setSquaresToCompare(allSquaresToCompare));
 
@@ -56,11 +100,7 @@ export const useSudokuSolver = () => {
       sudokuValues
     );
 
-    if (possibleNumbers.length === 1) {
-      const copy = sudokuValues.map((r) => [...r]);
-      copy[row][col] = possibleNumbers[0];
-      dispatch(setSudokuValues(copy));
-    }
+    return possibleNumbers;
   };
 
   return { startAutoSolve, handleFocus };

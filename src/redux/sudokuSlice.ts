@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { emptySudoku } from "@/data/sudokuData";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SudokuState {
   sudokuValues: number[][];

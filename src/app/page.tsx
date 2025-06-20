@@ -7,11 +7,13 @@ import ExampleSelectorDialog from "@/components/ExampleSelectorDialog";
 
 export default function Home() {
   return (
-    <Container sx={styleContainer}>
-      <Typography>SUDOKU</Typography>
-      <Sudoku />
-      <ActionButtons />
-      <ExampleSelectorDialog />
-    </Container>
+    <main>
+      <Container sx={styleContainer}>
+        <Typography>SUDOKU</Typography>
+        <Sudoku />
+        <ActionButtons />
+        <ExampleSelectorDialog />
+      </Container>
+    </main>
   );
 }

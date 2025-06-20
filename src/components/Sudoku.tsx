@@ -1,3 +1,4 @@
+"use client";
 import React, { ChangeEvent } from "react";
 import { Box, TextField } from "@mui/material";
 import { styleTextField } from "@/styles/sudokuStyle";
@@ -18,7 +19,8 @@ const Sudoku = () => {
   //! functions
   const getSquareProps = (rowIndex: number, colIndex: number) => {
     const squareID = `${rowIndex}-${colIndex}`;
-    const isSelected = squaresToCompare?.includes(squareID);
+    const isSelected = squaresToCompare?.includes(squareID) || false;
+
     const value =
       sudokuValues[rowIndex][colIndex] === 0
         ? ""

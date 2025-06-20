@@ -1,5 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
 import sudokuReducer from "./sudokuSlice";
+import { configureStore } from "@reduxjs/toolkit";
 
 export const makeStore = () => {
   return configureStore({

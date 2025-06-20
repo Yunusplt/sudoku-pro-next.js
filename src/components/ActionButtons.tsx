@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { emptySudoku } from "@/data/sudokuData";
 import { setIsOpenDialog } from "@/redux/sudokuSlice";
 import { useSudokuSolver } from "@/hooks/useSudokuSolver";
-import { emptySudoku } from "@/data/sudokuData";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 const ActionButtons = () => {
   //! redux
@@ -13,6 +13,7 @@ const ActionButtons = () => {
   //! custom hook
   const { startAutoSolve } = useSudokuSolver();
 
+  //! functions
   const handleOnclick = () => {
     if (sudokuValues === emptySudoku) {
       alert("Laden Sie bitte zuerst ein Beispiel!");
@@ -20,6 +21,7 @@ const ActionButtons = () => {
       startAutoSolve();
     }
   };
+
   return (
     <Box sx={{ display: "flex", gap: 3, mt: 5 }}>
       <Button
