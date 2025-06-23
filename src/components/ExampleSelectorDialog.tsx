@@ -17,12 +17,7 @@ const ExampleSelectorDialog = () => {
   };
 
   return (
-    <Dialog
-      open={isOpenDialog}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
+    <Dialog open={isOpenDialog} onClose={handleClose}>
       <DialogTitle id="alert-dialog-title">
         Wähle ein Sudoku-Beispiel zum Starten
       </DialogTitle>
