@@ -46,6 +46,7 @@ export default function ExampleTabs({
             <Tab label="Schwer" value="3" />
           </TabList>
         </Box>
+        {/* easy examples  */}
         <TabPanel value="1">
           <List component="nav">
             {easyExamples.map((example, index) => (
@@ -61,6 +62,7 @@ export default function ExampleTabs({
             ))}
           </List>
         </TabPanel>
+        {/* medium examples */}
         <TabPanel value="2">
           <List component="nav">
             {mediumExamples.map((example, index) => (
@@ -76,6 +78,7 @@ export default function ExampleTabs({
             ))}
           </List>
         </TabPanel>
+        {/* hard examples */}
         <TabPanel value="3">
           <List component="nav">
             {hardExamples.map((example, index) => (

@@ -5,8 +5,8 @@ import {
   getEmptySquares,
   focusSquareById,
   getPossibleNumbers,
-  getAllSquaresToCompare,
   findNumbersToEliminate,
+  getAllSquaresIdToCompare,
 } from "@/utils/sudokuHelpers";
 
 export const useSudokuSolver = () => {
@@ -41,12 +41,18 @@ export const useSudokuSolver = () => {
   //! handleFocus function is triggered when a square is focused
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const focusedSquareID = e.target.id;
-    //! control if the focused square is empty
     const [row, col] = focusedSquareID.split("-").map(Number);
-    if (sudokuValues[row][col] !== 0) {
-      return; // If the square is not empty, do nothing
-    }
-    const possibleNumbers = noRepeatNumbersModel(focusedSquareID);
+    if (sudokuValuesRef.current[row][col] !== 0) return; // If the square already has a value, do nothing
+
+    const allSquaresIdToCompare = getAllSquaresIdToCompare(focusedSquareID);
+
+    dispatch(setSquaresToCompare(allSquaresIdToCompare));
+
+    //* Find possible numbers and apply valid number
+    const possibleNumbers = getPossibleNumbers(
+      allSquaresIdToCompare,
+      sudokuValuesRef.current
+    );
 
     if (possibleNumbers.length === 1) {
       const copy = sudokuValues.map((r) => [...r]);
@@ -89,22 +95,6 @@ export const useSudokuSolver = () => {
         }
       }
     }
-  };
-
-  //* This function is used to get all squares which are used to compare
-  const noRepeatNumbersModel = (focusedSquareID: string) => {
-    //* get the all squares which are used to compare
-    const allSquaresToCompare = getAllSquaresToCompare(focusedSquareID);
-
-    dispatch(setSquaresToCompare(allSquaresToCompare));
-
-    //* Find possible numbers and apply valid number
-    const possibleNumbers = getPossibleNumbers(
-      allSquaresToCompare,
-      sudokuValues
-    );
-
-    return possibleNumbers;
   };
 
   return { startAutoSolve, handleFocus };

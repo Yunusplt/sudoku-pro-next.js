@@ -5,8 +5,8 @@ import { SudokuBlocksType } from "@/types/sudokuTypes";
 export const getEmptySquares = (currentSudoku: number[][]): string[] => {
   const emptySquareIDs: string[] = [];
   currentSudoku.forEach((row, rowIndex) => {
-    row.forEach((cell, colIndex) => {
-      if (cell === 0) {
+    row.forEach((square, colIndex) => {
+      if (square === 0) {
         emptySquareIDs.push(`${rowIndex}-${colIndex}`);
       }
     });
@@ -23,7 +23,8 @@ export const focusSquareById = async (id: string) => {
   await new Promise((res) => setTimeout(res, 200));
 };
 
-export const getAllSquaresToCompare = (id: string) => {
+//* Get all square IDs that need to be compared with the selected square
+export const getAllSquaresIdToCompare = (id: string) => {
   const [row, col] = id.split("-").map(Number);
 
   const rowSquares = Array.from({ length: 9 }, (_, i) => `${row}-${i}`); //* get the all square IDs in the row of the selected square
@@ -77,6 +78,31 @@ export const getValues = (
   });
 };
 
+//! For UI
+export const getSquareProps = ({
+  rowIndex,
+  colIndex,
+  sudokuValues,
+  squaresToCompare,
+}: {
+  rowIndex: number;
+  colIndex: number;
+  sudokuValues: number[][];
+  squaresToCompare?: string[] | null;
+}) => {
+  const squareID = `${rowIndex}-${colIndex}`;
+  const isSelected = squaresToCompare?.includes(squareID);
+
+  const value =
+    sudokuValues[rowIndex][colIndex] === 0
+      ? ""
+      : sudokuValues[rowIndex][colIndex];
+
+  return { isSelected, squareID, value };
+};
+
+//! the below functions are used for elimination process (für middle und schwer sudokus)
+
 //* Get the values of the squares in the closest row and column of the selected square
 const getRowValues = (row: number, sudokuValues: number[][]): number[] => {
   return getValues(
@@ -111,7 +137,6 @@ export const findNumbersToEliminate = (
   // colInBlock = 5 % 3 = 2
   // rowInBlock = 4 % 3 = 1
   // Thus, squareIdInBlock = "1-2"
-  // This is useful for determining the closest squares in the same block.
   const colInBlock = col % 3;
   const rowInBlock = row % 3;
   const squareIdInBlock = `${rowInBlock}-${colInBlock}`;

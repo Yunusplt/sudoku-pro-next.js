@@ -4,6 +4,7 @@ export const emptySudoku: number[][] = Array.from({ length: 9 }, () =>
   Array(9).fill(0)
 );
 
+// This object defines the blocks(3x3) of a standard 9x9 Sudoku grid.
 export const sudokuBlocks: SudokuBlocksType = {
   A: ["0-0", "0-1", "0-2", "1-0", "1-1", "1-2", "2-0", "2-1", "2-2"],
   B: ["0-3", "0-4", "0-5", "1-3", "1-4", "1-5", "2-3", "2-4", "2-5"],
