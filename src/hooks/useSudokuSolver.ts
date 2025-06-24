@@ -24,6 +24,7 @@ export const useSudokuSolver = () => {
   //! functions
   const startAutoSolve = async () => {
     let leftEmptySquares: string[] = getEmptySquares(sudokuValuesRef.current);
+
     while (leftEmptySquares.length > 0) {
       //* Focus each empty square one by one and trigger handleFocus for every empty square
       for (const id of leftEmptySquares) {
@@ -42,7 +43,7 @@ export const useSudokuSolver = () => {
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const focusedSquareID = e.target.id;
     const [row, col] = focusedSquareID.split("-").map(Number);
-    if (sudokuValuesRef.current[row][col] !== 0) return; // If the square already has a value, do nothing
+    if (sudokuValues[row][col] !== 0) return; // If the square already has a value, do nothing
 
     const allSquaresIdToCompare = getAllSquaresIdToCompare(focusedSquareID);
 
@@ -51,7 +52,7 @@ export const useSudokuSolver = () => {
     //* Find possible numbers and apply valid number
     const possibleNumbers = getPossibleNumbers(
       allSquaresIdToCompare,
-      sudokuValuesRef.current
+      sudokuValues
     );
 
     if (possibleNumbers.length === 1) {
