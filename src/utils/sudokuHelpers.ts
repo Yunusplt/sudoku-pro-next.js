@@ -1,7 +1,7 @@
 import { sudokuBlocks } from "@/data/sudokuData";
 import { SudokuBlocksType } from "@/types/sudokuTypes";
 
-//* Identify the IDs of cells with a value of 0 (empty cells)
+//* Identify the IDs of squares with a value of 0 (empty squares)
 export const getEmptySquares = (currentSudoku: number[][]): string[] => {
   const emptySquareIDs: string[] = [];
   currentSudoku.forEach((row, rowIndex) => {
