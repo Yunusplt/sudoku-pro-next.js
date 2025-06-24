@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSquaresToCompare, setSudokuValues } from "@/redux/sudokuSlice";
 import {
@@ -22,7 +22,7 @@ export const useSudokuSolver = () => {
   }, [sudokuValues]);
 
   //! functions
-  const startAutoSolve = useCallback(async () => {
+  const startAutoSolve = async () => {
     let leftEmptySquares: string[] = getEmptySquares(sudokuValuesRef.current);
     while (leftEmptySquares.length > 0) {
       //* Focus each empty square one by one and trigger handleFocus for every empty square
@@ -36,7 +36,7 @@ export const useSudokuSolver = () => {
 
     //* No empty squares left!!
     alert("Sudoku wurde erfolgreich gelöst!");
-  }, []);
+  };
 
   //! handleFocus function is triggered when a square is focused
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
